@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const userRouter = require('./Routes/auth')
+const FacebookRouter = require('./Routes/facebook')
 
 const port = 5000;
 app.use(cors({
@@ -14,6 +15,7 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 app.use('/auth',userRouter)
+app.use('/facebook',FacebookRouter)
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/Facebook')

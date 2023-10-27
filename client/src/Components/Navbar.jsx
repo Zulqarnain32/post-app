@@ -4,7 +4,7 @@ const Navbar = () => {
   return (
     <>
        <div className="navbar-container">
-          <div className="logo">Facebook</div>
+            <div className="logo">Facebook</div>
           <div className="nav-links">
              <Link to = "/create-post" className='nav-link'>Create Post</Link>
              <Link to = "login" className='nav-link login'>Login</Link>
