@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-
+const fs = require('fs');
 const FacebookModel = require('../model/FacebookSchema')
 
 const storage = multer.diskStorage({
@@ -14,8 +14,6 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + extname); // Rename the file with a timestamp to avoid name conflicts
     }
 });
-const upload = multer({ storage });
-
 
 
 //second step is to read created data
@@ -25,15 +23,36 @@ router.get('/facebook', async(req,res) => {
     .catch(err => res.json(err))
 })
 
-// first step to create data
-router.post('/facebookPost', async (req,res) => { 
-    const {title,postData,image} = req.body; 
-    if(!title ||!postData || !image ){
-        return res.json({message:"fill form"})
-    } 
-    FacebookModel.create(req.body)
-    .then(result => res.json(result))
-    .catch(err => res.json(err))
-})
+const upload = multer({ dest: 'uploads/' });
+
+router.post('/facebookPost', upload.single('file'), async (req, res) => {
+    try {
+        const { title, postData } = req.body;
+
+        if (!title || !postData || !req.file) {
+            return res.json({ message: "Fill form and upload a file" });
+        }
+
+        const originalFilename = req.file.originalname; 
+        const imageExtension = originalFilename.substring(originalFilename.lastIndexOf('.')); 
+        const newFilename = 'img' + originalFilename;
+
+        fs.renameSync(req.file.path, 'uploads/' + newFilename);
+
+        const post = {
+            title,
+            postData,
+            image: newFilename 
+        };
+
+        const result = await FacebookModel.create(post);
+        res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred" });
+    }
+});
+
+
 
 module.exports = router;

@@ -34,8 +34,8 @@ const Post = () => {
                </div>
                <h2 className="post-title">{post.title}</h2>
                <p className="post-para">{post.postData}</p>
-               <div className="post-img">{post.image}</div>
-               <img src={post.image} alt="" />
+               {/* <div className="post-img">{`http://localhost:5000/uploads/${post.image}`}</div> */}
+               <img src={`http://localhost:5000/uploads/${post.image}`} alt="img" />
                <hr />
                <div className="reacts-and-share">
                   <div className="reacts-side">
