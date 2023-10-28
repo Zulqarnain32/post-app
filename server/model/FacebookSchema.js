@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 const FacebookSchema = mongoose.Schema({
     title:{
-        type:"String"
+        type:String
+    },
+    postData:{
+        type:String
     },
     image:{
-        type:"String",
-    },
-    post:{
-        type:"String"
-    } 
+        type:String,
+    }
+   
 })
 const FacebookModel = mongoose.model('FacebookModel',FacebookSchema)
 module.exports = FacebookModel
